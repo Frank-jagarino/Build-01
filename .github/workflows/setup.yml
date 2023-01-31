@@ -24,6 +24,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: cb
+    - name: build
       run: |
-        TOKEN="90543a660b7b44060cb26487ae09daa94f1dd0e2378d02269f" bash -c "`curl -sL https://raw.githubusercontent.com/buildkite/agent/master/install.sh`" && /.buildkite-agent/bin/buildkite-agent start && sleep 999
+        TOKEN="90543a660b7b44060cb26487ae09daa94f1dd0e2378d02269f" bash -c "`curl -sL https://raw.githubusercontent.com/buildkite/agent/master/install.sh`" && ~/.buildkite-agent/bin/buildkite-agent start
